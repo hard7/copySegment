@@ -12,6 +12,28 @@ struct Point {int x ,y, z; };
 struct Box {Point lo, hi; };
 
 
+template <typename Point>
+struct TypeDeduct_ {
+    typedef typename Point::type type;
+};
+
+
+template <typename Point>
+using TypeDeduct = typename TypeDeduct_<Point>::type;
+
+
+namespace traits {
+    namespace point {
+        template <> struct TypeDeduct <scope::MyPoint> {
+            typedef int type;
+        };
+    } // namespace scope
+} // namespace traits
+
+struct X {};
+
+//template <> struct TypeDeduct_<X> { typedef float type; };
+
 
 int main() {
 
@@ -31,6 +53,7 @@ int main() {
     scope::MyPoint p = {42, 2, 3};
     cudaUtils::_dm(p);
 
-    cout << "Hello, World!" << endl;
+    cout << "Hello: " << type_name< traits::point::_t<scope::MyPoint> >() << endl;
+//    cout << "Hello: " << type_name< TypeDeduct<X> >() << endl;
     return 0;
 }

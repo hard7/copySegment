@@ -1,12 +1,13 @@
 #ifndef COPYSEGMENT_MYPOINT_H
 #define COPYSEGMENT_MYPOINT_H
 
-
 namespace scope {
+
+    typedef int VarT;
 
     class MyPoint {
     public:
-        typedef int type;
+//        typedef int type;
 
         int getX() const { return x; }
         int getY() const { return y; }

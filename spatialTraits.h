@@ -1,21 +1,27 @@
-#ifndef __COPY_SEGMENT__GEOMETRY_TRAITS_H__
-#define __COPY_SEGMENT__GEOMETRY_TRAITS_H__
+#ifndef __COPY_SEGMENT__SPATIAL_TRAITS_H__
+#define __COPY_SEGMENT__SPATIAL_TRAITS_H__
 
 
 #include <iostream>
 #include "type_name.h"
 #include "takeTypeDefault.h"
-
+#include "typeDeduct.h"
 
 namespace traits {
     namespace point {
 
         template<class Point>
-        struct Type {
-            typedef takeTypeDefault<Point, double> type;
+        struct TypeDeduct {
+            static_assert(not hasType<Point>(),
+                        "\n\n\t\t************ "
+                        "Error: determine typedef [CustomPoint]::type. "
+                        "Or define template specialisation for traits::point::TypeDeduct <[CustomPoint]> "
+                        "in all translation units, where it used (including implicitly) in algorithms with custom points."
+            );
+            typedef typename Point::type type;
         };
 
-        template <class Point> using _t = typename Type<Point>::type;
+        template <class Point> using _t = typename TypeDeduct<Point>::type;
 
         template<int N, class Point>
         _t<Point> get(Point const &) {
@@ -38,7 +44,7 @@ namespace traits {
             exit(8);
         }
 
-    }
+    } // namespace point
 
     namespace box {
         template<class Box> struct DeductPoint {
@@ -49,8 +55,8 @@ namespace traits {
         using _p = typename DeductPoint<Box>::type;
 
 
-    }
+    } // namespace box
 
-}
+} // namespace traits
 
-#endif //__COPY_SEGMENT__GEOMETRY_TRAITS_H__
+#endif //__COPY_SEGMENT__SPATIAL_TRAITS_H__

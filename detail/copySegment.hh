@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "../copySegment.h"
-#include "../geometryTraits.h"
+#include "../spatialTraits.h"
 #include "../type_name.h"
 
 template <class Box>

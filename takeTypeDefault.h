@@ -2,11 +2,14 @@
 #define __HAS_TYPE_H__
 
 
+#include <type_traits>
+
 namespace detail_takeType_ {
     template<class T> struct _void { typedef void type; };
 
     template<class Packed, class Default, class Dispatch =void>
     struct TakeType {
+        static_assert(not std::is_same<Dispatch, void>::value, "************ Error: determine typedef <Entity>::type");
         typedef Default type;
     };
 
