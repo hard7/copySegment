@@ -24,6 +24,10 @@ namespace scope {
     };
 
     struct Box { MyPoint lo, hi; };
+
+//    inline bool operator == (MyPoint const lhs, MyPoint const& rhs) {
+//        return lhs.getX() == rhs.getX() and lhs.getY() == rhs.getY() and lhs.getZ() == rhs.getZ();
+//    }
 }
 
 #endif //__COPY_SEGMENT__MY_SPATIAL_H__
