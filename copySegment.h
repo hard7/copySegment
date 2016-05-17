@@ -12,6 +12,7 @@ namespace cudaUtils {
         SegmentDesc(void* ptr_, Box const& boundBox_, Box const& segmentBox_) : ptr(ptr_), boundBox(boundBox_), segmentBox(segmentBox_) {}
     };
 
+    // constructor with template deduction
     template <class Box>
     SegmentDesc<Box> makeSegmentDesc(void* ptr, Box const& boundBox, Box const& segmentBox) {
         return SegmentDesc<Box>(ptr, boundBox, segmentBox);
@@ -25,14 +26,6 @@ namespace cudaUtils {
 
     template<class Box>
     void copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box>& dst, int sizeofType);
-
-
-
-    template <class Point>
-    void _dm(Point const& p);
-//
-//    template <class Box>
-//    void _dm2(SegmentDesc<Box> const& /*box*/) {    }
 
 } // namespace CudaUtils
 
