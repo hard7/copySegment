@@ -1,5 +1,5 @@
-#ifndef COPYSEGMENT_MYPOINT_H
-#define COPYSEGMENT_MYPOINT_H
+#ifndef __COPY_SEGMENT__MY_SPATIAL_H__
+#define __COPY_SEGMENT__MY_SPATIAL_H__
 
 namespace scope {
 
@@ -23,6 +23,7 @@ namespace scope {
         int x, y, z;
     };
 
+    struct Box { MyPoint lo, hi; };
 }
 
-#endif //COPYSEGMENT_MYPOINT_H
+#endif //__COPY_SEGMENT__MY_SPATIAL_H__

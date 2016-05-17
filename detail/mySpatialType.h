@@ -3,13 +3,18 @@
 
 
 #include "../spatialTraits.h"
-#include "myPoint.h"
+#include "mySpatial.h"
 
 namespace traits {
     namespace point {
-
         template<> struct TypeDeduct< ::scope::MyPoint > {
             typedef typename ::scope::MyPoint::_tp type;
+        };
+    }
+
+    namespace box {
+        template<> struct PointDeduct< ::scope::Box > {
+            typedef ::scope::MyPoint type;
         };
     }
 }

@@ -1,9 +1,10 @@
 #include <iostream>
 #include "copySegment.h"
 
+
+#include "detail/mySpatial.h"
+#include "detail/mySpatialType.h"
 #include "detail/copySegment.hh"        // Warning
-#include "detail/myPoint.h"
-#include "detail/myPointType.h"
 
 #include <vector>
 
@@ -38,6 +39,7 @@ struct X {};
 
 int main() {
 
+    const scope::Box box_x = {{1, 2, 3}, {4, 5, 6}};
     Box srcBoundBox = {{1, 2, 3}, {4, 5, 6}};
     Box srcSegmentBox = {{1, 2, 3}, {4, 3, 4}};
     cudaUtils::SegmentDesc<Box> src(nullptr, srcBoundBox, srcSegmentBox);
@@ -51,10 +53,15 @@ int main() {
 
 //    cudaUtils::copySegment(src, dst, 4);
 
-    scope::MyPoint p = {42, 2, 3};
-    cudaUtils::_dm(p);
+    typedef traits::box::_p<scope::Box> Point;
 
-    cout << "Hello: " << type_name< traits::point::_t<scope::MyPoint> >() << endl;
+//    Tx a = 2;
+
+//    cout << "Hello: " << type_name< traits::point::_t<scope::MyPoint> >() << endl;
+    cout << "Hello: " << traits::box::low(box_x).getY() << endl;
 //    cout << "Hello: " << type_name< TypeDeduct<X> >() << endl;
+
+
+
     return 0;
 }

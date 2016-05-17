@@ -1,16 +1,13 @@
-#include "myPoint.h"
-#include "myPointType.h"
+#include "mySpatial.h"
+#include "mySpatialType.h"
 #include "../spatialTraits.h"
 
 
 typedef scope::MyPoint Point;
+typedef scope::Box Box;
 
 namespace traits {
     namespace point {
-//
-//        template <> struct TypeDeduct <scope::MyPoint> {
-//            typedef int type;
-//        };
 
         template<> _t<Point> get<0>(Point const& p) { return p.getX(); }
         template<> _t<Point> get<1>(Point const& p) { return p.getY(); }
@@ -24,4 +21,13 @@ namespace traits {
             return Point(x, y, z);
         }
     } // namespace point
+
+    namespace box {
+        template<> _p<Box>& low(Box& box) { return box.lo; }
+        template<> _p<Box>& high(Box& box) { return box.hi; }
+
+        template<> _p<Box> const& low(Box const& box) { return box.lo; }
+        template<> _p<Box> const& high(Box const& box) { return box.hi; }
+    }
+
 } // namespace traits

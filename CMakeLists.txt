@@ -3,5 +3,5 @@ project(copySegment)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic-errors")
 
-set(SOURCE_FILES main.cpp detail/myPointTraits.cpp)
+set(SOURCE_FILES main.cpp detail/mySpatialTraits.cpp)
 add_executable(copySegment ${SOURCE_FILES})
