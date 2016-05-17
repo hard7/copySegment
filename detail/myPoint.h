@@ -7,17 +7,17 @@ namespace scope {
 
     class MyPoint {
     public:
-//        typedef int type;
+        typedef int _tp;
 
-        int getX() const { return x; }
-        int getY() const { return y; }
-        int getZ() const { return z; }
+        _tp getX() const { return x; }
+        _tp getY() const { return y; }
+        _tp getZ() const { return z; }
 
-        void setX(int value) { x = value; }
-        void setY(int value) { y = value; }
-        void setZ(int value) { z = value; }
+        void setX(_tp value) { x = value; }
+        void setY(_tp value) { y = value; }
+        void setZ(_tp value) { z = value; }
 
-        MyPoint(int x_, int y_, int z_) : x(x_), y(y_), z(z_) {}
+        MyPoint(_tp x_, _tp y_, _tp z_) : x(x_), y(y_), z(z_) {}
 
     private:
         int x, y, z;

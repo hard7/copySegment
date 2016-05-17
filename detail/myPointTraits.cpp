@@ -1,4 +1,5 @@
 #include "myPoint.h"
+#include "myPointType.h"
 #include "../spatialTraits.h"
 
 

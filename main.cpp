@@ -3,6 +3,7 @@
 
 #include "detail/copySegment.hh"        // Warning
 #include "detail/myPoint.h"
+#include "detail/myPointType.h"
 
 #include <vector>
 
@@ -21,14 +22,14 @@ struct TypeDeduct_ {
 template <typename Point>
 using TypeDeduct = typename TypeDeduct_<Point>::type;
 
-
-namespace traits {
-    namespace point {
-        template <> struct TypeDeduct <scope::MyPoint> {
-            typedef int type;
-        };
-    } // namespace scope
-} // namespace traits
+//
+//namespace traits {
+//    namespace point {
+//        template <> struct TypeDeduct <scope::MyPoint> {
+//            typedef int type;
+//        };
+//    } // namespace scope
+//} // namespace traits
 
 struct X {};
 
