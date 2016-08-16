@@ -1,20 +1,22 @@
 #ifndef __CUDA_UTILS__COPY_SEGMENT_H__
 #define __CUDA_UTILS__COPY_SEGMENT_H__
 
+#include "cuda.h" // CUdeviceptr
+
 namespace cudaUtils {
 
     template <class Box_>
     struct SegmentDesc {
         typedef Box_ Box;
-        void* ptr;
+        CUdeviceptr ptr;
         const Box boundBox, segmentBox;
 
-        SegmentDesc(void* ptr_, Box const& boundBox_, Box const& segmentBox_) : ptr(ptr_), boundBox(boundBox_), segmentBox(segmentBox_) {}
+        SegmentDesc(CUdeviceptr ptr_, Box const& boundBox_, Box const& segmentBox_) : ptr(ptr_), boundBox(boundBox_), segmentBox(segmentBox_) {}
     };
 
     // constructor with template deduction
     template <class Box>
-    SegmentDesc<Box> makeSegmentDesc(void* ptr, Box const& boundBox, Box const& segmentBox) {
+    SegmentDesc<Box> makeSegmentDesc(CUdeviceptr ptr, Box const& boundBox, Box const& segmentBox) {
         return SegmentDesc<Box>(ptr, boundBox, segmentBox);
     }
 
@@ -25,7 +27,7 @@ namespace cudaUtils {
      */
 
     template<class Box>
-    void copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box>& dst, int sizeofType);
+    void copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box> const& dst, int sizeofType);
 
 } // namespace CudaUtils
 

@@ -6,7 +6,8 @@
 #include "../copySegment.h"
 #include "../spatialTraits.h"
 #include "../type_name.h"
-#include "cassert"
+#include <helper_cuda_drvapi.h>
+#include <cassert>
 
 template <class Box> traits::box::_p<Box> getBoxSizes(Box const& box) {
     typedef traits::box::_p<Box> Point;
@@ -44,15 +45,13 @@ struct PointCompare <Point, std::false_type> {
     }
 };
 
-
-
 std::ostream& operator<<(std::ostream& os, scope::MyPoint const& p) {
     os << "{" << p.getX() << ", " << p.getY() << ", " << p.getZ() << "}";
     return os;
 }
 
 template <class Box>
-void cudaUtils::copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box>& dst, int /*sizeofType*/) {
+void cudaUtils::copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box> const& dst, int sizeofType) {
     using namespace traits;
     using std::cout;
     using std::endl;
@@ -62,10 +61,35 @@ void cudaUtils::copySegment(SegmentDesc<Box> const& src, SegmentDesc<Box>& dst, 
     Point srcSizes = getBoxSizes(src.segmentBox);
     Point dstSizes = getBoxSizes(dst.segmentBox);
 
-    cout << srcSizes << " " << dstSizes << endl;
     assert(PointCompare<Point>::isEqual(srcSizes, dstSizes));
 
+    using namespace traits::point;
+    using namespace traits::box;
+    
+    CUDA_MEMCPY3D cp;
+    cp.srcXInBytes = point::get<0>(box::low(src.segmentBox)) * sizeofType;
+    cp.srcY = point::get<1>(box::low(src.segmentBox));
+    cp.srcZ = point::get<2>(box::low(src.segmentBox));
+    cp.srcLOD = 0;                                  // let it be
+    cp.srcMemoryType = CU_MEMORYTYPE_DEVICE;        // "The owls are not what they seem"
+    cp.srcDevice = src.ptr;
+    cp.srcPitch = (point::get<0>(box::high(src.boundBox)) - point::get<0>(box::low(src.boundBox))) * sizeofType;
+    cp.srcHeight = point::get<1>(box::high(src.boundBox)) - point::get<1>(box::low(src.boundBox));
 
+    cp.dstXInBytes = point::get<0>(box::low(dst.segmentBox)) * sizeofType;
+    cp.dstY = point::get<1>(box::low(dst.segmentBox));
+    cp.dstZ = point::get<2>(box::low(dst.segmentBox));
+    cp.dstLOD = 0;                                  // let it be
+    cp.dstMemoryType = CU_MEMORYTYPE_DEVICE;        // "The owls are not what they seem"
+    cp.dstDevice = dst.ptr;
+    cp.dstPitch = (point::get<0>(box::high(dst.boundBox)) - point::get<0>(box::low(dst.boundBox))) * sizeofType;
+    cp.dstHeight = point::get<1>(box::high(dst.boundBox)) - point::get<1>(box::low(dst.boundBox));
+
+    cp.WidthInBytes = (point::get<0>(box::high(src.segmentBox)) - point::get<0>(box::low(src.segmentBox))) * sizeofType;
+    cp.Height = point::get<1>(box::high(src.segmentBox)) - point::get<1>(box::low(src.segmentBox));
+    cp.Depth = point::get<2>(box::high(src.segmentBox)) - point::get<2>(box::low(src.segmentBox));
+
+    checkCudaErrors( cuMemcpy3D(&cp) );
 
 
 
